@@ -1,0 +1,5 @@
+# Now we need to disable the included multicluster engine cluster-proxy-addons feature (which was added in Multicluster-Engine v2.7+): 
+
+# Run this command to disable cluster proxy addons.
+
+oc patch multiclusterengines.multicluster.openshift.io multiclusterengine --type=merge --patch-file out/argocd/deployment/disable-cluster-proxy-addon.json
