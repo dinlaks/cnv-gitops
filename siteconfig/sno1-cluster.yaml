@@ -8,11 +8,11 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
-  baseDomain: "cotton.blue"
+  baseDomain: "dinesh154.dfw.ocp.run"
   pullSecretRef:
     name: "assisted-deployment-pull-secret"
-  clusterImageSetNameRef: "img4.16.9-x86-64-appsub"
-  sshPublicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQD2Sh84/z9jj4Neg4xI3jlPO6C8sLdz3ykJjo+vD+WveOSBql2LiJ1k4z/AcBC55/ZPfZt6oK1pqtHYTIcZLobH7ApHvRSdsDmVgh67u/Lx5XMZ5ct6O9jC+lp98vNjGP5c9Zfcn1zIzcPATleOS52ubGQJA58ryuckoEq6TyyfvcHjUMNBv7AULDQ68syv0i9tuS+SH9cUgaEQGHsTyL9wA5fudh2JpLMvZigE0KqAwP/Z91QLyMFZsuxoy7x0CFBFym4miXiF7gVSpYsJxcUbb6qRSeHi4PGhNBm3IytRcbTOrwcdCx2E2uiyuWliC85NtMslQHYy+8eXcUavSW3GZnxgjenUnaNAIhQ1GQdUAdRmsLCzRehzBi/i3mc4ZgkhODQHacCg14RKj7c5GgyAh3b/6M9D43sqrjZa2vH1+RwID9wgWngVjJmy/RZ3tIhT94GKUn4/AWfAUpAtM1c3C1sxqRFTk6Q9otYm1Qq95/V0ewBQnbuzkpJSlCjtNqM= mabe@mabe.remote.csb"
+  clusterImageSetNameRef: "openshift-v4.17.17"
+  sshPublicKey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJn0yUIqXBCIglm0UUA+qLF+Dlr5U9pneFLOFdt+f9XJ dlakshma@redhat.com"
   clusters:
   - clusterName: "sno1"
     networkType: "OVNKubernetes"
@@ -20,7 +20,7 @@ spec:
       filter:
         inclusionDefault: exclude
     clusterLabels:
-      regional-hub: "true"
+      #regional-hub: "true"
       sites : "sno1"
     clusterNetwork:
       - cidr: 10.128.0.0/14
@@ -41,59 +41,65 @@ spec:
       - hostName: "sno1"
         role: "master"
         # bmcAddress: "ilo4-virtualmedia://192.168.1.62/redfish/v1/Systems/1"
-        bmcAddress: "redfish-virtualmedia://fakefish-192-168-1-62-fakefish.apps.sno3.cotton.blue/redfish/v1/Systems/1"
+        # bmcAddress: "idrac-virtualmedia+https://192.168.110.118/redfish/v1/Systems/System.Embedded.1"
+        bmcAddress: "idrac-virtualmedia://192.168.110.118/redfish/v1/Systems/System.Embedded.1"
+        #bmcAddress: "redfish-virtualmedia://fakefish-192-168-1-62-fakefish.apps.sno3.cotton.blue/redfish/v1/Systems/1"
         # bmcAddress: "ilo4-virtualmedia://fakefish-192-168-1-62-fakefish.apps.hub.cotton.blue/redfish/v1/Systems/1"
         bmcCredentialsName:
           name: "sno-bmc-secret"
-        bootMACAddress: "98:f2:b3:ed:9e:58"
+        bootMACAddress: "d0:8e:79:ed:6c:90"
         bootMode: "UEFI"
         rootDeviceHints:
-          wwn: 0x600508b1001c6f8c8d556fd234f32781
-          # deviceName: /dev/sda
+          # wwn: 0x600508b1001c6f8c8d556fd234f32781
+          #deviceName: /dev/sda
           # deviceName: "/dev/disk/by-path/pci-0000:0a:00.0-scsi-0:1:0:1"
           # serialNumber: 3600508b1001c152315a9ff023826e090
-          # serialNumber: S3L1BTL80000N530A26J
+          # serialNumber: S3L1BTL80000N530A26J          
+          #### below device represents Dell Node18 
+          #deviceName: /dev/nvme0n1
+          #wwn: eui.ace42e00162c876f
+          deviceName: "/dev/disk/by-path/pci-0000:b1:00.0-nvme-1"
         nodeNetwork:
           interfaces:
-            - name: "ens1s0"
-              macAddress: "98:f2:b3:ed:9e:58"
-            - name: "ens1f0np0"
-              macAddress: "b8:59:9f:de:72:20"
-            - name: "ens1f1np1"
-              macAddress: "b8:59:9f:de:72:21"
+            - name: "eno8303"
+              macAddress: "d0:8e:79:ed:6c:90"
+            #- name: "en08403"
+            #  macAddress: "d0:8e:79:ed:6c:91"
+            #- name: "enp202s0"
+            #  macAddress: "40:a6:b7:7c:8e:b8"
           config:
             interfaces:
-              - name: ens1s0
+              - name: eno8303
                 type: ethernet
                 state: up
                 ipv4:
                   enabled: true
                   dhcp: false
                   address:
-                  - ip: 192.168.1.170
+                  - ip: 192.168.154.118
                     prefix-length: 24
-              - name: ens1f0np0
-                type: ethernet
-                state: down
-                ipv4:
-                  enabled: false
-                  dhcp: false
-              - name: ens1f1np1
-                type: ethernet
-                state: down
-                ipv4:
-                  enabled: false
-                  dhcp: false
+              #- name: en08403
+              #  type: ethernet
+              #  state: down
+              #  ipv4:
+              #    enabled: false
+              #    dhcp: false
+              #- name: enp202s0
+              #  type: ethernet
+              #  state: down
+              #  ipv4:
+              #    enabled: false
+              #    dhcp: false
             dns-resolver:
                config:
                  search:
-                 - cotton.blue
+                 - "dinesh154.dfw.ocp.run"
                  server:
-                 - 192.168.1.1
+                 - 192.168.154.10
             routes:
               config:
               - destination: 0.0.0.0/0
                 next-hop-interface: ens1s0
-                next-hop-address: 192.168.1.1
+                next-hop-address: 192.168.154.1
                 table-id: 254
 
